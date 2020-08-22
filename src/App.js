@@ -1,29 +1,8 @@
 import React, { Component } from 'react';
-// import styled from 'styled-components';
 
 import classes from './App.css';
 
 import Person from './Person';
-
-// const StyledButton = styled.button`
-//     background-color: ${(props) => (props.cao ? 'red' : 'green')};
-//     color: white;
-//     font: inherit;
-//     border: 1px solid blue;
-//     padding: 8px;
-//     cursor: pointer;
-
-//     &:hover {
-//         background-color: ${(props) => (props.cao ? 'salmon' : 'lightgreen')};
-//         color: black;
-//     }
-// `;
-
-// style.backgroundColor = 'red';
-// style[':hover'] = {
-//     backgroundColor: 'salmon',
-//     color: 'black',
-// };
 
 class App extends Component {
     state = {
@@ -74,13 +53,12 @@ class App extends Component {
                         return (
                             <Person
                                 click={() => this.deletaPessoaHandler(index)}
+                                key={person.id}
                                 name={person.name}
                                 age={person.age}
                                 changed={(event) =>
                                     this.nomeTrocadohandler(event, person.id)
                                 }
-                                // key={index}
-                                key={person.id}
                             />
                         );
                     })}
@@ -106,7 +84,6 @@ class App extends Component {
                 </p>
                 <button
                     className={btnClasses}
-                    // cao={this.state.showPersons}
                     onClick={this.tooglePersonsHandler}
                 >
                     Mostrar Pessoas
