@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 
 import classes from './App.css';
 
-import Person from './Person';
+import Persons from '../components/Persons';
+import Cockpit from '../components/Cockpit';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        console.log('[App.js] constructor');
+    }
+
     state = {
         persons: [
             { id: 'a', name: 'Max', age: 28 },
@@ -13,6 +19,15 @@ class App extends Component {
         ],
         showPersons: false,
     };
+
+    static getDerivedStateFromProps(props, state) {
+        console.log('[App.js] getDerivedStateFromProps', props);
+        return state;
+    }
+
+    componentDidMount() {
+        console.log('[App.js] componentDidMount');
+    }
 
     nomeTrocadohandler = (event, id) => {
         const personIndex = this.state.persons.findIndex((p) => {
@@ -42,52 +57,27 @@ class App extends Component {
     };
 
     render() {
+        console.log('[App.js] render');
         let persons = null;
-
-        let btnClasses = '';
 
         if (this.state.showPersons) {
             persons = (
-                <div>
-                    {this.state.persons.map((person, index) => {
-                        return (
-                            <Person
-                                click={() => this.deletaPessoaHandler(index)}
-                                key={person.id}
-                                name={person.name}
-                                age={person.age}
-                                changed={(event) =>
-                                    this.nomeTrocadohandler(event, person.id)
-                                }
-                            />
-                        );
-                    })}
-                </div>
+                <Persons
+                    persons={this.state.persons}
+                    clicked={this.deletaPessoaHandler}
+                    changed={this.nomeTrocadohandler}
+                />
             );
-
-            btnClasses = classes.Red;
-        }
-
-        const assignedClasses = [];
-        if (this.state.persons.length <= 2) {
-            assignedClasses.push(classes.red);
-        }
-        if (this.state.persons.length <= 1) {
-            assignedClasses.push(classes.bold);
         }
 
         return (
             <div className={classes.App}>
-                <h1>Teste</h1>
-                <p className={assignedClasses.join(' ')}>
-                    This is really working
-                </p>
-                <button
-                    className={btnClasses}
-                    onClick={this.tooglePersonsHandler}
-                >
-                    Mostrar Pessoas
-                </button>
+                <Cockpit
+                    title={this.props.appName}
+                    persons={this.state.persons}
+                    showPersons={this.state.showPersons}
+                    clicked={this.tooglePersonsHandler}
+                />
                 {persons}
             </div>
         );
