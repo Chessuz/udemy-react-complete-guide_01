@@ -1,31 +1,50 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classes from './style.css';
 
+import Auxx from '../../../hoc/Auxx';
+import withClass from '../../../hoc/withClass';
+
 class Person extends Component {
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.persons !== this.props.persons) {
-            return true;
-        } else {
-            return false;
-        }
+    constructor(props) {
+        super(props);
+
+        this.inputElemRef = React.createRef();
+    }
+    componentDidMount() {
+        this.inputElemRef.current.focus();
     }
 
     render() {
         console.log('[Person.js] rendireing...');
         return (
-            <div className={classes.Person}>
+            <Auxx>
+                {this.props.isAuth ? <p>Authenticated</p> : <p>Please Login</p>}
                 <p onClick={this.props.click}>
                     Eu sou {this.props.name} e tenho {this.props.age} anos!
                 </p>
                 <p>{this.props.children}</p>
                 <input
                     type="text"
+                    // ref={(inputEl) => {
+                    //     this.inputElem = inputEl;
+                    // }}
+                    ref={this.inputElemRef}
                     onChange={this.props.changed}
                     value={this.props.name}
                 />
-            </div>
+            </Auxx>
         );
     }
 }
 
-export default Person;
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func,
+    teste: PropTypes.string,
+};
+
+export default withClass(Person, classes.Person);
+// export default Person;
