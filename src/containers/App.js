@@ -6,6 +6,7 @@ import Persons from '../components/Persons';
 import Cockpit from '../components/Cockpit';
 import withClass from '../hoc/withClass';
 import Auxx from '../hoc/Auxx';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
     constructor(props) {
@@ -80,21 +81,26 @@ class App extends Component {
                     persons={this.state.persons}
                     clicked={this.deletaPessoaHandler}
                     changed={this.nomeTrocadohandler}
-                    loged={this.state.authenticated}
                 />
             );
         }
 
         return (
             <Auxx>
-                <Cockpit
-                    title={this.props.appName}
-                    persons={this.state.persons}
-                    showPersons={this.state.showPersons}
-                    clicked={this.tooglePersonsHandler}
-                    login={this.loginHandler}
-                />
-                {persons}
+                <AuthContext.Provider
+                    value={{
+                        authenticated: this.state.authenticated,
+                        login: this.loginHandler,
+                    }}
+                >
+                    <Cockpit
+                        title={this.props.appName}
+                        persons={this.state.persons}
+                        showPersons={this.state.showPersons}
+                        clicked={this.tooglePersonsHandler}
+                    />
+                    {persons}
+                </AuthContext.Provider>
             </Auxx>
         );
     }
